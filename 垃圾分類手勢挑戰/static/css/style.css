@@ -1,0 +1,295 @@
+/* 基礎重置 */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    background: #1a1a2e; /* 深藍紫色背景 */
+    color: #e0e0e0; /* 淺灰色文字，增加對比度 */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* 更現代的字體 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    text-align: center;
+    overflow-x: hidden; /* 防止水平滾動 */
+}
+
+#app {
+    width: 100%;
+    max-width: 900px; /* 限制最大寬度 */
+    padding: 1rem;
+}
+
+/* 畫面切換控制 */
+.screen {
+    display: none;
+    padding: 2rem;
+    background-color: #2c2c54; /* 深一點的背景用於 screen */
+    border-radius: 15px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+}
+.screen.active { display: block; }
+
+/* 標題樣式 */
+h1 {
+    font-size: 2.8rem;
+    margin-bottom: 1.5rem;
+    color: #ff6b81; /* 鮮豔的粉紅色 */
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+}
+h2 {
+    font-size: 2.2rem;
+    margin-bottom: 1rem;
+    color: #ff9f43; /* 橙色 */
+}
+h3 {
+    font-size: 1.5rem;
+    margin-bottom: 0.8rem;
+    color: #54a0ff; /* 亮藍色 */
+}
+
+/* 按鈕通用樣式 */
+.btn-mode {
+    background: #ff6b81;
+    border: none;
+    padding: 0.8rem 1.8rem;
+    margin: 0.5rem;
+    color: white;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 1.1rem;
+    font-weight: bold;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+.btn-mode:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+}
+.btn-mode:active {
+    transform: translateY(-1px) scale(1.02);
+}
+
+.start-btn { background: #4caf50; /* 綠色 */}
+.restart-btn { background: #ff9f43; /* 橙色 */ }
+.home-btn { background: #54a0ff; /* 藍色 */ }
+
+
+/* 遊戲畫面 HUD (Head-Up Display) */
+.hud {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding: 0.8rem;
+    background-color: rgba(0,0,0,0.2);
+    border-radius: 10px;
+}
+
+.timer-container {
+    font-size: 1.1rem;
+}
+
+.timer-bar {
+    width: 200px;
+    height: 20px; /* 稍微加高 */
+    background: #444; /* 深灰色背景 */
+    border-radius: 10px;
+    overflow: hidden;
+    margin-top: 0.3rem;
+    border: 2px solid #666;
+}
+.timer-fill {
+    height: 100%;
+    width: 100%;
+    background: linear-gradient(to right, #ff6b81, #ff9f43); /* 漸變色 */
+    transition: width 0.1s linear;
+    border-radius: 8px;
+}
+
+.score {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #4caf50; /* 綠色表示得分 */
+}
+
+/* 遊戲主要區域 */
+.game-area {
+    display: flex;
+    justify-content: space-around; /* 或 space-between */
+    align-items: flex-start; /* 頂部對齊 */
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.garbage-display {
+    flex-basis: 50%; /* 佔據一半空間 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#garbage-image {
+    max-width: 100%; /* 響應式圖片 */
+    height: auto;
+    max-height: 300px; /* 限制最大高度 */
+    border: 4px solid #555;
+    border-radius: 10px;
+    background-color: #333; /* 圖片背景色，以防圖片透明 */
+    padding: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    transition: transform 0.3s ease, border-color 0.3s ease; /* 平滑過渡 */
+    display: none; /* 初始隱藏 */
+}
+
+
+.gesture-feedback-container {
+    flex-basis: 45%; /* 另一半空間 */
+    text-align: center;
+}
+
+.player-gesture-display p {
+    margin-bottom: 0.5rem;
+    font-size: 1.2rem;
+}
+
+.gesture-icon {
+    width: 120px; /* 增大圖標 */
+    height: 120px;
+    border: 4px solid #ff6b81; /* 主題粉色邊框 */
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3.5rem; /* 增大字體 */
+    margin: 0 auto 1rem auto; /* 自動居中並添加底部邊距 */
+    background-color: rgba(255,255,255,0.1);
+    color: #fff;
+    font-weight: bold;
+}
+
+.gesture-countdown {
+    font-size: 1.2rem;
+    font-weight: bold;
+    min-height: 1.5em; /* 避免文字跳動 */
+    color: #fff; /* 預設白色 */
+}
+
+/* 分類提示 */
+.category-legend-container {
+    margin-top: 2rem;
+    padding: 1rem;
+    background-color: rgba(0,0,0,0.1);
+    border-radius: 10px;
+}
+#category-legend-list {
+    list-style: none;
+    padding: 0;
+    display: grid; /* 使用 grid 佈局 */
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* 響應式列 */
+    gap: 0.5rem;
+    text-align: left;
+}
+#category-legend-list li {
+    padding: 0.4rem;
+    background-color: rgba(255,255,255,0.05);
+    border-radius: 5px;
+    font-size: 0.9rem;
+}
+
+/* 結算畫面 */
+#result-screen {
+    /* display: none; */ /* 由 JS 控制 */
+    position: fixed; /* 覆蓋整個畫面 */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(26, 26, 46, 0.9); /* 半透明背景 */
+    display: flex; /* flex 由 JS 控制 */
+    align-items: center;
+    justify-content: center;
+    z-index: 100; /* 確保在最上層 */
+}
+
+.result-box {
+    background: #2c2c54;
+    padding: 2.5rem 3rem; /* 調整內邊距 */
+    border-radius: 20px;
+    text-align: center;
+    border: 3px solid #ff6b81;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+    width: 90%;
+    max-width: 500px;
+}
+.result-box h2 {
+    margin-bottom: 1.5rem;
+}
+.result-box p {
+    font-size: 1.4rem;
+    margin-bottom: 2rem;
+}
+.result-box .final-score {
+    font-weight: bold;
+    color: #4caf50;
+    font-size: 1.8rem;
+}
+
+.button-group {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+    justify-content: center;
+    flex-wrap: wrap; /* 按鈕多時換行 */
+}
+
+/* 特效 - style.js 中也有定義，CSS中可作為備份或基礎 */
+#garbage-image.correct-effect {
+    animation: correctBlink 0.3s ease-in-out;
+    border-color: #2ecc71 !important; /* 答對時綠色邊框 */
+}
+#garbage-image.wrong-effect {
+    animation: wrongShake 0.3s ease-in-out;
+    border-color: #e74c3c !important; /* 答錯時紅色邊框 */
+}
+
+@keyframes correctBlink {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1) rotate(3deg); }
+}
+@keyframes wrongShake {
+    0%, 100% { transform: translateX(0) rotate(0); }
+    20% { transform: translateX(-10px) rotate(-3deg); }
+    40% { transform: translateX(10px) rotate(3deg); }
+    60% { transform: translateX(-10px) rotate(-3deg); }
+    80% { transform: translateX(10px) rotate(3deg); }
+}
+
+/* 手機版面優化 */
+@media (max-width: 768px) {
+    h1 { font-size: 2.2rem; }
+    .game-area {
+        flex-direction: column; /* 垂直排列 */
+        align-items: center;
+    }
+    .garbage-display, .gesture-feedback-container {
+        flex-basis: auto; /* 取消固定寬度 */
+        width: 100%;
+        margin-bottom: 1rem;
+    }
+    #garbage-image {
+        max-height: 200px; /* 手機上圖片小一點 */
+    }
+    .gesture-icon {
+        width: 100px;
+        height: 100px;
+        font-size: 2.5rem;
+    }
+    .hud {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    .timer-bar { width: 100%; }
+    #category-legend-list {
+        grid-template-columns: 1fr; /* 單列顯示 */
+    }
+}

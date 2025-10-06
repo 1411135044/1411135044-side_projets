@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>垃圾分類手勢挑戰</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.min.js"></script>
+</head>
+<body>
+    <div id="app">
+        <div id="start-screen" class="screen active">
+            <h1>垃圾分類手勢挑戰</h1>
+            <p>辨識垃圾，比出手勢，進行分類！</p>
+            <button id="btn-start" class="btn-mode start-btn">開始遊戲</button>
+        </div>
+
+        <div id="game-screen" class="screen">
+            <div class="hud">
+                <div class="timer-container">
+                    遊戲時間: <span id="game-time-left">60</span>s
+                    <div class="timer-bar">
+                        <div class="timer-fill"></div>
+                    </div>
+                </div>
+                <div class="score">得分: <span id="current-score">0</span></div>
+            </div>
+
+            <div class="game-area">
+                <div class="garbage-display">
+                    <img id="garbage-image" src="" alt="垃圾圖片">
+                </div>
+                <div class="gesture-feedback-container">
+                    <div class="player-gesture-display">
+                        <p>你的手勢:</p>
+                        <div id="player-gesture" class="gesture-icon">?</div>
+                    </div>
+                    <div id="gesture-countdown-text" class="gesture-countdown">辨識中...</div>
+                </div>
+            </div>
+
+            <div class="category-legend-container">
+                <h3>分類提示:</h3>
+                <ul id="category-legend-list">
+                    </ul>
+            </div>
+        </div>
+
+        <div id="result-screen" class="screen">
+            <div class="result-box">
+                <h2>遊戲結束！</h2>
+                <p>最終得分: <span id="final-score">0</span></p>
+                <div class="button-group">
+                    <button id="btn-restart" class="btn-mode restart-btn">再玩一次</button>
+                    <button id="btn-home" class="btn-mode home-btn">回到首頁</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='js/game.js') }}"></script>
+</body>
+</html>

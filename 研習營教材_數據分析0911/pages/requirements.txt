@@ -1,0 +1,7 @@
+streamlit
+kaggle
+pandas
+pygwalker
+plotly
+statsmodels
+nbformat
